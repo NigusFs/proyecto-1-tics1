@@ -40,7 +40,7 @@ void loop(){
   if (pulso > 30){
   pulso_total=pulso+pulso_total;
   }
-  
+ 
   
   
 }
