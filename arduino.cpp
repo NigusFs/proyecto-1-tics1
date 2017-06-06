@@ -6,42 +6,58 @@ int count=0;
 
 void setup(){ Serial.begin(9600); }
 
-unsigned long timedPulsos( unsigned long pulso_total,int count, int seconds)
+unsigned long timedPulsos( unsigned long pulso_total, int seconds)
 { 
   unsigned long startedAt = millis(); // optimizar esto ?
   while(millis() - startedAt < seconds *1000) // milisegundos
   { 
   int pulso=analogRead(pot_p);
-  //Serial.println(pulso);
+
   if (pulso > 30){ pulso_total=pulso+pulso_total;}
   }
- //Serial.print ("Pulsos totales (");
- //Serial.print (count);
- //Serial.println (") :");
+ 
   return pulso_total;
 }
 
-unsigned long timedTemperatura( float temp_total,int count, int seconds)// temperatura promedio en n seconds
-{ 
+unsigned long timedTemperatura( float temp_total, int seconds)// temperatura promedio en n seconds
+{  
   unsigned long startedAt = millis();
+  int count_T=0;
+
   while(millis() - startedAt < seconds *1000) // milisegundos
   { 
-  int temp=analogRead(pot_t);
-  //Serial.println(pulso);
+
+  float temp=analogRead(pot_t);
   temp_total=temp+temp_total;
+  count_T+=1;
   
- //Serial.print ("Pulsos totales (");
- //Serial.print (count);
- //Serial.println (") :");
-  return pulso_total;
+  }
+  return temp_total/count_T; // promedio de la temperatura
+}
+
+unsigned long timedPresion( float presion_total, int seconds)// presion promedio en n seconds
+{  
+  unsigned long startedAt = millis();
+  int count_P=0;
+
+  while(millis() - startedAt < seconds *1000) // milisegundos
+  { 
+
+  float temp=analogRead(pot_p);
+  temp_total=temp+temp_total;
+  count_P+=1;
+  
+  }
+  return presion_total/count_P; // promedio de la presion
 }
 
 
 
 
 void loop(){
-  int secs=15;
-  Serial.println(timedPulsos(0,count,secs));   // 15 segundos
-  
-  count=count+1;
+  int secs=15;// de aqui se regula el tiempo, cambiarlo para q sea ingresado por consola
+
+  Serial.println(timedPulsos(0,secs));   // 15 segundos
+  Serial.println(timedTemperatura(0,secs));
+  Serial.println(timedPresion(0,secs));
   }
