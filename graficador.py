@@ -4,14 +4,15 @@ from drawnow import *
 import atexit
 import numpy as np
 import random
-
+##falta que mande las alertas, q muestre 2 graficos mas (temperatura y presion, humedad(?) )
+##hacer interfaz y recibir el tiempo de las muestras
 values = []
 values_save=np.array([0,0])
 
 plt.ion()
 cnt=0
 
-serialArduino = serial.Serial("COM4", 9600)
+serialArduino = serial.Serial("COM4", 9600) # el puerto cambia segun la conexion
 
 def plotValues():
     plt.title('Serial value from Arduino')
