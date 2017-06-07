@@ -17,7 +17,7 @@ serialArduino = serial.Serial("COM4", 9600) # el puerto cambia segun la conexion
 def plotValues():
     plt.title('Serial desde Arduino')
     plt.grid(True)
-    plt.ylabel('Valores')
+    plt.ylabel('Valores * 1/1000')
     plt.plot(values, 'ro-', label='values')
     plt.legend(loc='upper right')
 
