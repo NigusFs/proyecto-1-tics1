@@ -42,7 +42,8 @@ while True:
     while (serialArduino.inWaiting()==0):
         pass
     valueRead = serialArduino.readline(500)
-    valueInInt = int(valueRead)*(1/1000)
+    scale=1/1000
+    valueInInt = int(valueRead)*(scale)
     if (valueInInt>=5 or valueInInt==0): 
         print("readline()")
     try:
