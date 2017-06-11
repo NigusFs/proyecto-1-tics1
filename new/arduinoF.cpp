@@ -80,5 +80,9 @@ void loop(){
   float tempPr=temp_total/count_T;
   Serial.write(",");
   Serial.print(tempPr,2);// 2 decimales
+ // Serial.write(",");
+  //Serial.print(HumPr,2);// 2 decimales
+  //Serial.write(",");
+ // Serial.print(PresPr,2);// 2 decimales
   Serial.print("\n");
 }
