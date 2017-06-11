@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def main(): 
+def main(): #graficar 4 graficos, es facil
 	a = np.load('dataF64951.npy')## hay que colocarle el numero de la prueba
 	a=np.delete(a, 1, axis=0)
 	a=np.delete(a, 0, axis=0)
