@@ -6,6 +6,10 @@ int count=0;
 #include <Wire.h>
 #define ALTITUDE 1655.0 
 
+#include <dht.h>
+dht DHT;
+#define DHT11_PIN 7
+
 
 
 SFE_BMP180 pressure;
@@ -16,26 +20,6 @@ void setup(){
 
 }
 
-
-/*
-unsigned long timedPresion( float presion_total, int seconds)// presion promedio en n seconds
-{  
-  unsigned long startedAt = millis();
-  int count_P=0;
-
-  while(millis() - startedAt < seconds *1000) // milisegundos
-  { 
-
-  float temp=analogRead(pot_p);
-  temp_total=temp+temp_total;
-  count_P+=1;
-  
-  }
-  return presion_total/count_P; // promedio de la presion
-}
-
-
-*/
 
 void loop(){
   //variables generales
@@ -53,6 +37,19 @@ void loop(){
   double T;
   char statusT=pressure.startTemperature();
   //---
+  
+  //Variables para Presion
+  int count_P=0;
+  float presion_total;
+  double P;
+  char statusP= pressure.startPressure(3);;
+  //--
+  //Variables para Humedad
+  int chk = DHT.read11(DHT11_PIN);
+  int count_H=0;
+  float humedad_total=0;
+  //---
+  
   while(millis() - startedAt < secs *1000) // milisegundos
   { 
     //pulsos
@@ -74,15 +71,36 @@ void loop(){
         count_T+=1;
       }
     } 
-    //Serial.println(timedPresion(0,secs));
+    //Presion
+    if (statusP != 0)
+    {
+      delay(statusP); // Wait for the measurement to complete:
+      statusP = pressure.getPressure(P,T);
+      if (statusP != 0)
+      {
+        float presion=float(P);
+        presion_total=presion+presion_total;
+        count_P+=1;
+      }
+    }
+
+    //---
+    
+    // Humedad
+    float humedad=DHT.humidity;
+    humedad_total=humedad+humedad_total;
+    count_H+=1;
+    
   }
-  Serial.print(pulso_total);
   float tempPr=temp_total/count_T;
+  float humPr=humedad_total/count_H;
+  float presPr=presion_total/count_P;
+  Serial.print(pulso_total);
   Serial.write(",");
   Serial.print(tempPr,2);// 2 decimales
- // Serial.write(",");
-  //Serial.print(HumPr,2);// 2 decimales
-  //Serial.write(",");
- // Serial.print(PresPr,2);// 2 decimales
+  Serial.write(",");
+  Serial.print(humPr,2);// 2 decimales
+  Serial.write(",");
+  Serial.print(presPr,2);// 2 decimales
   Serial.print("\n");
 }
